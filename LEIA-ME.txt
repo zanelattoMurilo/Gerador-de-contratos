@@ -1,0 +1,13 @@
+V2.6 HOMOLOGAÇÃO — Somente dados fictícios.
+
+1. Tenha Node.js 18 ou superior.
+2. Abra um terminal nesta pasta.
+3. Execute: node servidor.js
+4. Cole a chave APPSHEET quando solicitada (não fica salva).
+5. Abra http://127.0.0.1:3000 no navegador.
+6. Insira CLI001 e clique Buscar cliente; confira o cadastro e clique Preencher formulário.
+7. Selecione o gênero manualmente, confira os dados e só então gere o DOCX.
+
+Atenção: o formulário original não possui campos de RG, profissão, estado civil ou telefone. A importação atual preenche SOMENTE os campos mapeados. Modelo de menor não é preenchido automaticamente nesta primeira versão.
+Esta etapa não torna o sistema pronto para produção, acesso remoto ou dados reais. Antes disso, exigir autenticação de usuários, TLS, controle de acessos, auditoria, proteção de dados e testes de regressão completos.
+O gerador base V2.5.1 foi preservado como fonte, templates inclusos sem modificações.

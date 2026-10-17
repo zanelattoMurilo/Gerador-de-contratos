@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="light" name="color-scheme"/>
+<title>Ana Passos | Conceito de Navegação V2.6 — Exemplo não oficial</title>
+<style>
+:root{--pine:#13371f;--pine2:#204a31;--pine3:#0b2818;--gold:#b6814e;--gold2:#d4af82;--goldsoft:#f5e9d9;--cream:#f7f6f2;--paper:#fff;--ink:#1f2d25;--muted:#728078;--border:#e6e5de;--greenlight:#edf4ed;--shadow:0 10px 38px rgba(34,42,33,.06);--shadow-hover:0 14px 36px rgba(18,52,29,.13);--r:15px;--serif:Georgia,'Times New Roman',serif;--sans:Inter,'Segoe UI',Arial,sans-serif}
+*,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--cream);font:14px/1.5 var(--sans);min-height:100vh;overflow-x:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:not-allowed}button:focus-visible,a:focus-visible{outline:3px solid #a9c8ae;outline-offset:3px}svg.icon{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}svg.icon.small{width:15px;height:15px}svg.icon.big{width:24px;height:24px}svg.icon.tiny{width:13px;height:13px}
+::selection{background:#d6e6d7;color:var(--pine3)}.app-shell{max-width:1570px;margin:0 auto;padding:0 36px 68px}.topbar{position:sticky;top:0;z-index:70;min-height:73px;background:linear-gradient(104deg,#0d2e1b 0%,#143b25 53%,#092718 100%);color:#fff;box-shadow:0 3px 24px #071b1019;transition:min-height .28s,box-shadow .28s}.topbar.scrolled{min-height:61px;box-shadow:0 8px 26px #09201030}.topline{max-width:1570px;margin:auto;min-height:inherit;padding:0 36px;display:flex;align-items:center;gap:25px}.brand{display:flex;align-items:center;gap:13px;min-width:290px}.mark{width:44px;height:44px;border:1px solid #d2b481;display:grid;place-items:center;font:26px var(--serif);color:#ddbe88;position:relative}.mark:after{content:'';inset:4px;position:absolute;border:1px solid #dfc69845;pointer-events:none}.brand-name{font:20px/1.13 var(--serif);letter-spacing:2px;color:#e1c090}.brand-sub{font:9px var(--sans);letter-spacing:2px;color:#e9cfab;margin-top:3px}.nav{display:flex;gap:6px;align-items:center;flex:1;justify-content:center}.nav-btn{color:#dfebe1;background:transparent;border:0;padding:11px 13px;border-radius:8px;display:inline-flex;align-items:center;gap:9px;transition:background .22s,color .22s,transform .22s;white-space:nowrap;font-weight:550;font-size:13px}.nav-btn:hover{background:#ffffff17;color:#fff;transform:translateY(-1px)}.nav-btn.active{background:#ffffff1e;box-shadow:inset 0 -2px 0 var(--gold2);color:#fff}.nav-btn .icon{width:17px;height:17px}.top-tools{display:flex;align-items:center;gap:11px}.top-icon{width:35px;height:35px;display:grid;place-items:center;border:1px solid #ffffff2b;border-radius:9px;background:#ffffff09;color:#f7eade;transition:background .2s}.top-icon:hover{background:#ffffff21}.avatar{display:flex;align-items:center;gap:9px}.avatar-circle{width:37px;height:37px;border-radius:50%;background:#f4e3c9;color:#956a3d;display:grid;place-items:center;font:17px var(--serif)}.avatar-meta{line-height:1.15}.avatar-meta b{font-size:12px}.avatar-meta span{display:block;color:#bdd2c2;font-size:10px;margin-top:4px}.decor{height:4px;background:linear-gradient(90deg,var(--gold) 0%,#f4dcb7 43%,var(--gold) 74%,#244b35 100%)}
+.hero{display:none;justify-content:space-between;align-items:flex-start;gap:24px;padding:29px 0 20px;position:relative}.hero:before{content:'';pointer-events:none;position:absolute;left:-36px;top:0;width:250px;height:150px;background:radial-gradient(ellipse at top left,#e6d8c45c,transparent 70%);z-index:-1}.overline{color:#aa7948;font-size:10px;letter-spacing:2.3px;font-weight:800}.hero h1{margin:4px 0 2px;font:normal clamp(30px,3vw,43px)/1.1 var(--serif);letter-spacing:-1.1px;color:#142c1e}.hero h1 em{font:700 11px var(--sans);font-style:normal;letter-spacing:0;background:#f2e8dc;color:#9a713f;padding:5px 8px;border-radius:18px;vertical-align:middle;margin-left:9px}.hero p{color:var(--muted);margin:6px 0 0;font-size:13px}.hero-meta{display:flex;align-items:center;gap:10px;margin-top:8px}.demo-pill{font-size:11px;font-weight:650;color:#406c51;background:#eaf3eb;border:1px solid #dce9dd;border-radius:9px;display:flex;gap:8px;align-items:center;padding:10px 12px;white-space:nowrap}.dot{height:8px;width:8px;background:#2e8a53;border-radius:50%;box-shadow:0 0 0 3px #d8e9db}.ghost-btn{background:#fff;border:1px solid #e1c8aa;color:#6f563d;border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:7px;font-weight:650;font-size:12px;transition:background .2s,transform .2s}.ghost-btn:hover{background:#faf2e9;transform:translateY(-1px)}
+.choice-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}.choice{background:var(--paper);border:1px solid var(--border);border-radius:13px;text-align:left;display:flex;align-items:center;gap:17px;padding:19px 17px;min-height:107px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .24s,border-color .24s,background .24s,box-shadow .24s}.choice:after{content:'';position:absolute;left:-35px;top:-40px;width:130px;height:160px;border-radius:50%;background:radial-gradient(circle,#e9d8bf55,transparent 70%);pointer-events:none}.choice:hover{transform:translateY(-3px);border-color:#d0bba2;box-shadow:var(--shadow-hover)}.choice.active{border:1.5px solid #25563a;background:linear-gradient(115deg,#fbfdfb,#eff6ef);box-shadow:0 0 0 2px #1a583819,0 10px 26px #142f1d13}.choice-icon{height:56px;width:56px;display:grid;place-items:center;border-radius:15px;color:#a47a4b;background:#fbf4eb;z-index:1}.choice.active .choice-icon{background:#e3f0e6;color:var(--pine)}.choice-main{z-index:1;flex:1;min-width:0}.choice-title{display:block;font:21px/1.12 var(--serif);color:#1f3325}.choice-desc{display:block;margin-top:7px;color:#68766d;font-size:12px;line-height:1.4;max-width:260px}.choice-check{width:21px;height:21px;border:2px solid #cdd4ce;border-radius:50%;flex:none;display:grid;place-items:center;margin-right:3px}.choice.active .choice-check{border-color:var(--pine);background:var(--pine);box-shadow:inset 0 0 0 4px #f3f8f3}.workspace-grid{display:grid;grid-template-columns:minmax(0,1.82fr) minmax(340px,.92fr);align-items:start;gap:16px}.left-stage,.aside-stage{min-width:0}.panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}.panel-head{padding:20px 22px 14px;display:flex;align-items:center;gap:11px}.round-symbol{width:44px;height:44px;border-radius:50%;background:#faf0e3;display:grid;place-items:center;color:#916b3b}.panel-head h2{font:23px var(--serif);margin:0;color:#192b1e}.panel-head p{margin:3px 0 0;font-size:12px;color:#768079}.section-block{background:#fff;border:1px solid var(--border);border-radius:12px;margin:0 17px 12px;overflow:hidden;transition:border-color .2s,box-shadow .2s}.section-block:hover{border-color:#d4d9d1}.section-head{display:flex;align-items:center;gap:10px;padding:13px 16px 11px}.number{height:28px;width:28px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#947044,#c39b6a);color:#fff;font-weight:750;font-size:12px;flex:none}.section-head h3{font:18px var(--serif);margin:0}.section-head p{margin:0;font-size:11px;color:#7c8880}.section-note{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.form-content{padding:0 16px 17px}.form-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field.c12{grid-column:span 12}.field.c8{grid-column:span 8}.field.c7{grid-column:span 7}.field.c6{grid-column:span 6}.field.c5{grid-column:span 5}.field.c4{grid-column:span 4}.field.c3{grid-column:span 3}.field label{font-weight:650;font-size:11px;color:#314034}.field label .req{color:#b77147}.field input,.field select,.field textarea,.search-input{width:100%;background:#fff;border:1px solid #d9dcd5;outline:0;border-radius:8px;padding:10px 11px;color:#28362d;font-size:12px;min-height:40px;transition:border-color .18s,box-shadow .18s,background .18s}.field textarea{min-height:76px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus,.search-input:focus{border-color:#367b51;box-shadow:0 0 0 3px rgba(44,121,73,.14);background:#fcfffc}.field input::placeholder,.field textarea::placeholder{color:#a2aaa3}.helper{color:#849087;font-size:10px}.type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.type-card{border:1px solid #e0e3dd;border-radius:10px;background:#fff;padding:13px 12px;display:flex;gap:12px;align-items:center;text-align:left;min-height:82px;transition:all .2s}.type-card:hover{border-color:#b4c8b6;transform:translateY(-1px)}.type-card.active{background:linear-gradient(110deg,#eff7f1,#fff);border:1.5px solid #285f3e;box-shadow:0 0 0 2px #215f3810}.type-card b{display:block;font:16px var(--serif)}.type-card small{font-size:11px;color:#78877d;display:block;margin-top:3px}.type-card .icon{color:#a97f54}.type-card.active .icon{color:#21573a}.type-indicator{margin-left:auto;border-radius:50%;height:17px;width:17px;border:1.5px solid #cbd2cc;display:grid;place-items:center;flex:none}.type-card.active .type-indicator{background:var(--pine);border-color:var(--pine);box-shadow:inset 0 0 0 4px #fff}.seg{display:flex;background:#f5f5f1;border:1px solid #e4e5df;border-radius:9px;padding:3px;gap:2px;max-width:max-content}.seg button{border:0;background:transparent;color:#67776c;border-radius:7px;padding:9px 12px;font-size:11px;font-weight:700;transition:background .2s,color .2s}.seg button:hover{color:#1d412c;background:#e8eee6}.seg button.active{background:var(--pine);color:#fff;box-shadow:0 2px 7px #09251722}.hint-strip{margin-top:11px;background:#f7f1e8;border:1px solid #f0e8dc;border-radius:9px;color:#766647;padding:11px 12px;font-size:11px;display:flex;gap:9px;align-items:center}.hint-strip.green{background:#f0f6f1;color:#3d6a4c;border-color:#e1eee3}.micro-label{font-size:10px;letter-spacing:1.5px;color:#a77b4e;font-weight:800;text-transform:uppercase}.muted{color:var(--muted)}.stage-in{animation:stageEnter .38s cubic-bezier(.2,.82,.22,1) both}.reveal-in{animation:stageEnter .3s ease both}@keyframes stageEnter{from{opacity:0;transform:translateY(12px) scale(.991)}to{opacity:1;transform:translateY(0) scale(1)}}
+.left-stage:has(.result-list) .action-footer{position:static}.action-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px 17px;border-top:1px solid #f0f0ec;position:sticky;bottom:0;background:linear-gradient(180deg,#ffffffeb,#fff);backdrop-filter:blur(12px);border-radius:0 0 15px 15px;z-index:4}.action-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;border:1px solid transparent;padding:11px 15px;font-size:12px;font-weight:750;transition:background .18s,box-shadow .18s,transform .18s,border-color .18s;white-space:nowrap}.btn:hover:not(:disabled){transform:translateY(-1.5px)}.btn-primary{color:#fff;background:linear-gradient(130deg,#123720,#205334);box-shadow:0 5px 14px #153a2220}.btn-primary:hover:not(:disabled){background:linear-gradient(130deg,#205337,#2d6843);box-shadow:0 8px 18px #153a2232}.btn-gold{color:#775433;background:linear-gradient(110deg,#f7ead9,#f0dcc5);border-color:#ead5bb}.btn-gold:hover:not(:disabled){background:#eed7b8}.btn-neutral{color:#59645b;background:#fff;border-color:#e0e3dd}.btn-neutral:hover:not(:disabled){background:#f5f7f3;border-color:#aebcb1}.btn-danger{color:#9f403e;background:#fff8f6;border-color:#f0d6d0}.btn-danger:hover:not(:disabled){background:#ffece8}.tiny-copy{font-size:10px;color:#8a948b}
+.context{position:sticky;top:84px;overflow:hidden}.context-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #e5e8e0;padding:0 7px}.context-tab{border:0;background:transparent;min-width:0;white-space:nowrap;color:#6d7a70;padding:16px 5px 13px;font-size:11px;font-weight:750;display:flex;justify-content:center;align-items:center;gap:6px;position:relative;transition:color .2s}.context-tab:hover{color:#1b5634;background:#f7faf6}.context-tab.active{color:#17472b}.context-tab.active:after{content:'';position:absolute;bottom:-1px;height:2.5px;background:#225638;left:8px;right:8px;border-radius:5px}.context-content{padding:15px;min-height:495px}.info-card{border:1px solid #ebe8e1;border-radius:12px;padding:15px;background:#fff}.info-card h3{font:20px var(--serif);margin:0 0 8px}.info-header{display:flex;align-items:center;gap:11px;margin:8px 0 17px}.info-avatar{height:50px;width:50px;border-radius:50%;background:linear-gradient(145deg,#f8e8d3,#e9d7bf);display:grid;place-items:center;font:19px var(--serif);color:#946c44}.info-avatar.empty{background:#f3f5f0;color:#8c9c91}.info-name{font:18px var(--serif)}.status-pill{font:700 10px var(--sans);border-radius:6px;padding:5px 7px;background:#eaf3e9;color:#35724e;margin-left:auto;white-space:nowrap}.status-pill.lead{color:#8a642e;background:#fcf3e7}.status-pill.qualification{color:#526d85;background:#edf3fb}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px 9px}.summary-cell{display:flex;align-items:flex-start;gap:7px;min-width:0}.summary-cell .icon{color:#a78258;width:15px;height:15px}.summary-cell small{display:block;font-size:10px;color:#879088;line-height:1.3}.summary-cell strong{display:block;font-size:11px;line-height:1.45;word-break:break-word;font-weight:600;margin-top:3px}.progress-label{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;font-weight:750}.progress-track{height:8px;border-radius:10px;background:#e4e8e2;overflow:hidden;margin:9px 0}.progress-fill{height:100%;background:linear-gradient(90deg,#1f653c,#48a16d);border-radius:10px;transition:width .5s}.mini-note{font-size:10px;color:#7b887e}.separation{height:1px;background:#ecece6;margin:15px 0}.checklist{display:grid;gap:12px;margin-top:13px}.checkitem{display:flex;align-items:flex-start;gap:10px;font-size:12px}.checkicon{height:18px;width:18px;border-radius:50%;display:grid;place-items:center;color:#fff;background:#b7c3b9;flex:none;margin-top:1px}.checkitem.done .checkicon{background:#2b8350}.checkitem.done{color:#42584a}.checkitem strong{font-size:12px}.checkitem small{display:block;color:#8d9990;font-size:10px;margin-top:2px}.aside-tip{margin-top:12px;border-radius:10px;background:linear-gradient(110deg,#f6efdf,#fff8ef);color:#80613c;font-size:11px;padding:13px;display:flex;align-items:flex-start;gap:10px}.doc-paper{border:1px solid #e7e6e0;background:#fff;box-shadow:0 10px 24px #2b332019;min-height:420px;max-width:310px;margin:12px auto 0;padding:25px 22px 30px;position:relative}.doc-paper:after{content:'';position:absolute;bottom:0;height:8px;left:0;right:0;background:var(--pine);border-top:3px solid var(--gold)}.doc-letterhead{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--pine);padding-bottom:7px;color:#a17850}.doc-letterhead b{font:15px var(--serif)}.doc-letterhead small{font-size:6px;letter-spacing:.5px}.doc-heading{text-align:center;font-size:11px;font-weight:800;margin:34px 0 24px}.doc-body{font:9px/1.65 Georgia,serif;color:#313a31;text-align:justify}.doc-body p{margin:0 0 11px}.doc-sign{border-top:1px solid #7d857d;text-align:center;margin:43px auto 0;font:700 8px var(--sans);padding-top:6px;max-width:80%}.doc-bottom{margin-top:10px;color:#8b948b;text-align:center;font-size:10px}.view-expand{border:0;background:transparent;color:#9a7548;font-size:11px;font-weight:800;display:flex;align-items:center;gap:6px;margin:10px auto}.view-expand:hover{text-decoration:underline}
+.search-section{padding:0 20px 12px}.search-box{display:flex;align-items:center;gap:8px}.search-wrap{position:relative;flex:1}.search-wrap .icon{position:absolute;left:11px;top:11px;color:#7c8980}.search-input{padding-left:38px}.search-controls{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.filter-btn{border:1px solid #e4e5e1;background:#fff;border-radius:7px;padding:6px 10px;font-size:11px;color:#748076;transition:all .2s}.filter-btn:hover{border-color:#8daa94}.filter-btn.active{background:#f1e7da;border-color:#b99063;color:#765434;font-weight:800}.result-list{display:grid;gap:9px;margin:0 20px 15px}.result{border:1px solid #ebebe5;border-radius:10px;display:flex;align-items:center;gap:13px;text-align:left;padding:13px 14px;background:#fff;min-width:0;transition:all .22s}.result:hover{border-color:#b3c4b5;background:#f9fcf8;transform:translateX(2px)}.result.active{border-color:#a9c2ae;background:#f0f7f0}.result-avatar{width:41px;height:41px;border-radius:50%;background:#f8eddd;color:#9f7747;display:grid;place-items:center;font:16px var(--serif);flex:none}.result-text{flex:1;min-width:0}.result-text b{font:17px var(--serif);display:block}.result-text small{font-size:10px;color:#7f8880;display:block;margin-top:3px}.result-arrow{color:#a88250}.notice-inline{margin:13px 20px;background:#f4f8f3;padding:11px 14px;border:1px solid #e5eee4;border-radius:9px;font-size:11px;color:#42604a}.editor-banner{margin:0 18px 12px;padding:13px 15px;background:linear-gradient(100deg,#eef5ee,#f8fbf7);border:1px solid #dfeadd;border-radius:10px;display:flex;align-items:center;gap:11px}.editor-banner b{font:17px var(--serif)}.editor-banner small{font-size:11px;color:#718376;display:block}.editor-banner .btn{margin-left:auto}.entry-options{display:flex;gap:9px;flex-wrap:wrap}.radio-pill{border:1px solid #e0e4dd;background:#fff;border-radius:9px;padding:9px 12px;font-size:11px;font-weight:650;color:#647468;display:flex;align-items:center;gap:7px;transition:all .2s}.radio-pill:hover{border-color:#c8d5c9;background:#fafcf9}.radio-pill.selected{border-color:#245a38;color:#1e5b37;background:#f1f7f2}.radio-round{border:1.5px solid #bcc9be;height:14px;width:14px;border-radius:50%}.selected .radio-round{border:4px solid #235d3d}.faux-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.faux-stat{padding:13px;border:1px solid #e6e9e4;border-radius:9px;background:#fff}.faux-stat b{font:26px var(--serif);display:block;color:#245838}.faux-stat span{font-size:11px;color:#718376}
+.overlay-backdrop{position:fixed;inset:0;background:rgba(7,24,15,.47);backdrop-filter:blur(5px);z-index:110;display:flex;align-items:center;justify-content:center;padding:20px;animation:fade .2s}.overlay-backdrop[hidden]{display:none}@keyframes fade{from{opacity:0}to{opacity:1}}.modal{background:#fff;width:min(530px,100%);border-radius:16px;box-shadow:0 26px 100px #071e1450;padding:24px;animation:pop .27s cubic-bezier(.2,.9,.2,1)}@keyframes pop{from{opacity:0;transform:scale(.965) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}.modal-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.modal h3{font:26px var(--serif);margin:3px 0 5px}.modal p{font-size:12px;color:#768078;margin:0}.close-btn{border:0;background:#f2f3f0;border-radius:8px;color:#667367;height:35px;width:35px;display:grid;place-items:center}.close-btn:hover{background:#e4e9e3}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;flex-wrap:wrap}.modal-content{margin-top:17px}.drawer-root{position:fixed;inset:0;z-index:105;display:flex;justify-content:flex-end}.drawer-root[hidden]{display:none}.drawer-scrim{position:absolute;inset:0;background:#0c241766;backdrop-filter:blur(3px);animation:fade .18s}.drawer{position:relative;width:min(590px,100%);height:100%;overflow:auto;background:#fafbf8;box-shadow:-20px 0 75px #08231645;animation:slideIn .3s cubic-bezier(.15,.92,.3,1)}@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}.drawer-header{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #e6e7e1;padding:21px 25px;display:flex;justify-content:space-between;align-items:center}.drawer-header h2{font:26px var(--serif);margin:0}.drawer-body{padding:22px}.drawer .doc-paper{max-width:430px;min-height:585px;padding:35px 35px}.drawer .doc-letterhead b{font-size:21px}.drawer .doc-heading{font-size:16px;margin:45px 0 35px}.drawer .doc-body{font-size:12px}.drawer .doc-sign{font-size:11px;margin-top:75px}.toast-wrap{position:fixed;right:24px;bottom:26px;z-index:180;display:grid;gap:9px;max-width:min(440px,90vw)}.toast{border:1px solid #cdded0;background:#f8fffa;box-shadow:0 8px 36px #0a25162a;color:#255438;padding:13px 16px;border-radius:11px;display:flex;align-items:flex-start;gap:10px;font-size:12px;animation:stageEnter .24s}.toast.warn{border-color:#e9d9ba;background:#fffcf5;color:#785f39}.toast .icon{width:18px;height:18px}.footer{text-align:center;padding:27px 0 0;font-size:11px;color:#95a097}.footer span{display:inline-block;color:#b18a5f;margin:0 10px}
+@media(max-width:1210px){.brand{min-width:215px}.brand-name{font-size:16px}.brand-sub{font-size:8px}.topline,.app-shell{padding-left:23px;padding-right:23px}.nav-btn{padding:9px 8px;font-size:12px}.workspace-grid{grid-template-columns:minmax(0,1.6fr) minmax(310px,.92fr)}.choice{gap:10px;padding:14px 12px}.choice-title{font-size:18px}.choice-icon{width:44px;height:44px}}
+@media(max-width:980px){.workspace-grid{grid-template-columns:1fr}.context{position:static}.context-content{min-height:auto}.nav-btn{font-size:0;gap:0}.nav-btn svg.icon{width:20px;height:20px}.brand{min-width:230px}.hero{flex-wrap:wrap}.hero-meta{margin-top:0}.choice-row{gap:10px}.choice-desc{font-size:11px}}
+@media(max-width:650px){.topline,.app-shell{padding-left:13px;padding-right:13px}.topline{gap:10px;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}.brand{min-width:0;flex:1}.brand-name{font-size:15px}.brand-sub{letter-spacing:1px}.nav{order:3;flex-basis:100%;justify-content:space-between}.nav-btn{padding:8px}.avatar-meta{display:none}.hero{padding:23px 0 13px}.hero h1{font-size:32px}.hero-meta{flex-wrap:wrap}.choice-row{grid-template-columns:1fr;gap:8px}.choice{min-height:73px;padding:10px 13px}.choice-icon{height:40px;width:40px}.choice-desc{margin-top:3px}.panel-head{padding:17px 14px}.section-block{margin:0 10px 10px}.form-grid{gap:9px}.field.c8,.field.c7,.field.c6,.field.c5,.field.c4,.field.c3{grid-column:span 12}.type-grid{grid-template-columns:1fr}.action-footer{flex-wrap:wrap;padding:12px;position:static}.action-right{width:100%;display:grid;grid-template-columns:1fr 1fr}.action-right .btn{white-space:normal}.editor-banner{flex-wrap:wrap}.editor-banner .btn{margin:0;width:100%}.search-section{padding:0 12px 12px}.result-list{margin:0 12px 15px}.summary-grid{grid-template-columns:1fr 1fr}.context-tabs{padding:0}.context-tab{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Feedback 01 — comportamentos de edição e pré-visualização */
+#context-content .stage-in{animation:none!important}
+.field input[data-mask="cpf"],.field input[data-mask="phone"],.field input[data-mask="rg"]{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:0;border-color:#1c7043;box-shadow:0 0 0 3px rgba(31,112,66,.16),0 2px 8px rgba(24,73,39,.05)}
+.field small.field-help{color:#7e8880;font-size:10px;line-height:1.3}
+.doc-navigation{display:flex;justify-content:space-between;align-items:center;gap:9px;margin:16px 0 4px;border-top:1px solid #eee9df;padding-top:14px}
+.doc-navigation .doc-nav-btn{display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid #d9d9cf;background:#fff;color:#1b432e;border-radius:9px;padding:10px 13px;font-size:12px;font-weight:700;transition:background .18s,border-color .18s,transform .18s;min-width:103px}
+.doc-navigation .doc-nav-btn:hover:not(:disabled){background:#f1f6f1;border-color:#7baa89;transform:translateY(-1px)}
+.doc-navigation .doc-nav-btn:disabled{opacity:.3;cursor:default}
+.doc-nav-meta{text-align:center;line-height:1.4;min-width:0;flex:1}.doc-nav-meta b{display:block;font-size:11px;color:#283c2d}.doc-nav-meta small{font-size:10px;color:#758177}
+.drawer-body .doc-navigation{max-width:580px;margin:18px auto 4px}
+@media(max-width:520px){.doc-navigation .doc-nav-btn{min-width:0;padding:9px}.doc-navigation .doc-nav-btn span{display:none}}
+
+
+/* Feedback 02 — rolagem progressiva discreta. Nada fica escondido sem JS. */
+.scroll-reveal{opacity:1;transform:none}
+@media (prefers-reduced-motion: no-preference){
+  .scroll-reveal.reveal-pending{opacity:0;transform:translate3d(0,12px,0)}
+  .scroll-reveal.reveal-enter{animation:v26-reveal .42s cubic-bezier(.2,.75,.28,1) both}
+  @keyframes v26-reveal{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:none}}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .scroll-reveal,.scroll-reveal.reveal-pending,.scroll-reveal.reveal-enter{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
+}
+
+
+/* CONCEITO 03: tipografia legível e arquitetura de áreas */
+:root{--sans:Arial,Helvetica,sans-serif;--serif:Arial,Helvetica,sans-serif}
+.mark{font-family:Georgia,'Times New Roman',serif} /* Apenas o monograma preserva caráter do logotipo */
+.brand-name{font-size:19px;font-weight:600;letter-spacing:1.5px}
+.hero h1{font-size:clamp(29px,3vw,40px);letter-spacing:-.6px;font-weight:700}
+.choice-title,.panel-head h2,.section-head h3,.info-card h3,.modal h3,.drawer-header h2{font-family:var(--sans);letter-spacing:-.35px}
+.choice-title{font-size:18px;font-weight:700}.section-head h3{font-weight:700;font-size:16px}.panel-head h2{font-size:21px;font-weight:700}
+.module-view[hidden]{display:none!important}.module-view{animation:stageEnter .32s ease both}
+.module-heading{display:flex;align-items:start;justify-content:space-between;gap:15px;padding:12px 3px 19px}.module-heading h2{margin:3px 0 7px;color:#153522;font-size:24px;letter-spacing:-.4px}.module-heading p{margin:0;color:#718075;font-size:13px;max-width:750px}.eyebrow{font-size:10px;font-weight:800;letter-spacing:1.3px;color:#ab8157}.edition-tag{font-size:11px;color:#8b6948;background:#f4e9da;border:1px solid #eedeca;padding:7px 10px;border-radius:8px;white-space:nowrap}.sub-head{margin-top:22px}.sub-head h2{font-size:22px}
+.dept-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.dept-card{position:relative;text-align:left;background:#fff;border:1px solid var(--border);box-shadow:var(--shadow);border-radius:15px;min-height:244px;padding:24px;display:flex;flex-direction:column;align-items:flex-start;transition:transform .2s,box-shadow .2s,border-color .2s}.dept-card:hover,.folder-card:hover,.document-tile:hover,.setting-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:#cfbea6}.dept-art{width:58px;height:58px;display:grid;place-items:center;border-radius:13px;margin-bottom:20px}.dept-art.warm{background:#f8ece0;color:#986c3c}.dept-art.green{background:#e6f0e9;color:var(--pine)}.dept-art.muted{background:#eff1ed;color:#67786b}.dept-card small{font-size:10px;letter-spacing:1.1px;font-weight:800;color:#a27a52}.dept-card strong{font-size:22px;letter-spacing:-.4px;color:var(--pine);margin:4px 0}.dept-card p{margin:3px 0 15px;color:#718076;font-size:13px}.dept-go{margin-top:auto;color:#25543a;font-size:12px;font-weight:700;display:inline-flex;gap:8px;align-items:center}.dept-go .icon{width:14px}
+.folder-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.folder-card{display:flex;align-items:center;gap:16px;text-align:left;border:1px solid var(--border);border-radius:11px;background:#fff;padding:17px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s,border-color .2s}.folder-symbol{height:43px;width:43px;border-radius:11px;background:#f2ecdf;color:#986c40;font-weight:800;display:grid;place-items:center;flex:none}.folder-card div{flex:1}.folder-card b{display:block;font-size:14px}.folder-card small{color:#7b867d;font-size:11px;display:block;margin-top:5px}.folder-card .icon{color:#b38b5b}
+.soft-banner{margin-top:20px;background:#eaf1ea;border:1px solid #d8e7db;border-radius:10px;padding:15px 17px;display:flex;align-items:center;gap:10px;color:#416349;font-size:12px}
+.layer-path{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:3px 0 16px}.layer-path span{border:1px solid #e7e4dc;color:#798177;background:#fff;border-radius:8px;font-size:11px;padding:10px 13px}.layer-path .path-active{background:#eaf2eb;border-color:#d1e4d7;color:#225039;font-weight:700}.layer-path .path-muted{border-style:dashed}
+.generator-grid{display:grid;grid-template-columns:minmax(0,0.95fr) minmax(0,1.05fr);gap:16px;align-items:start}.generator-card{padding:21px}.generator-card h3{margin:0 0 7px;font-size:18px}.generator-card .muted-desc{margin:0 0 19px;color:#708078;font-size:12px}.generator-card .field{margin-bottom:15px}.generator-card .doc-paper{max-width:480px;margin:18px auto 0;min-height:435px;padding:22px 24px}.generator-card .doc-paper .doc-heading{margin:25px 0}.generator-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}.generator-actions .btn{flex:1;justify-content:center}.preview-tag{font-size:10px;color:#a0703c;font-weight:800;letter-spacing:1px}.mini-notice{display:flex;align-items:flex-start;gap:9px;color:#6d7c70;font-size:12px;border:1px dashed #d9dfd6;background:#fafbf9;border-radius:8px;padding:13px;margin-top:16px}
+.document-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.document-tile{text-align:left;border:1px solid var(--border);border-radius:12px;padding:23px 16px;background:#fff;min-height:215px;display:flex;flex-direction:column;align-items:flex-start;gap:9px;transition:transform .2s,border-color .2s,box-shadow .2s}.file-icon{height:43px;width:43px;border-radius:10px;background:#f5ecdf;display:grid;place-items:center;color:#98754a}.document-tile strong{font-size:16px;color:#183522;margin-top:5px}.document-tile small{color:#78867a;font-size:12px;line-height:1.5}.document-tile span:last-child{color:#947047;font-size:11px;font-weight:700;margin-top:auto}.module-placeholder{border:1px dashed #d9d8cf;border-radius:13px;padding:30px;background:#fffefa;margin-top:18px}.stamp{display:inline-block;color:#9f7544;border:1px solid #e7d3b5;border-radius:20px;background:#f8efe3;padding:5px 10px;font-size:10px;font-weight:800;letter-spacing:1px}.module-placeholder h3{font-size:18px;color:#243c2c;margin:15px 0 8px}.module-placeholder p{color:#768278;font-size:13px;line-height:1.7;max-width:720px}.placeholder-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.placeholder-two .module-placeholder{margin:0;min-height:300px}.quiet-lines{display:grid;gap:13px;margin-top:26px}.quiet-lines i{display:block;height:12px;background:#f0f0eb;border-radius:5px}.quiet-lines i:nth-child(2){width:80%}.quiet-lines i:nth-child(3){width:60%}
+.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.setting-tile{display:grid;grid-template-columns:46px 1fr;column-gap:12px;row-gap:4px;text-align:left;background:#fff;border:1px solid var(--border);border-radius:12px;padding:23px;transition:transform .2s,border-color .2s,box-shadow .2s}.setting-tile .file-icon{grid-row:span 3}.setting-tile b{font-size:15px}.setting-tile small{font-size:12px;color:#758177}.setting-tile em{font-size:11px;color:#ae8355;font-style:normal;margin-top:8px}
+/* Menu superior permanece legível em telas estreitas e pode ser rolado horizontalmente */
+@media(max-width:980px){.nav-btn{font-size:12px;gap:6px}.nav-btn .icon{width:16px}.topline{flex-wrap:wrap}.brand{flex:1;min-width:0}.nav{order:3;flex-basis:100%;justify-content:flex-start;overflow-x:auto;scrollbar-width:thin;padding:2px 0 7px}.nav-btn{flex:none}.generator-grid{grid-template-columns:1fr}.document-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.dept-grid,.folder-grid,.placeholder-two,.admin-grid{grid-template-columns:1fr}.dept-card{min-height:185px}.document-grid{grid-template-columns:1fr 1fr}.module-heading{flex-direction:column}.edition-tag{align-self:flex-start}.generator-card{padding:15px}.generator-card .doc-paper{padding:16px}.nav{gap:4px}.nav-btn span{display:inline}.nav-btn{font-size:11px;padding:8px}.layer-path span{font-size:10px;padding:7px 8px}}
+@media(max-width:440px){.document-grid{grid-template-columns:1fr}.avatar{display:none}.hero h1{font-size:28px}}
+
+/* Página do contrato: indicador de página */
+.doc-pagenum{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:1.2px;color:#8b948b;text-transform:uppercase}
+.drawer .doc-pagenum{font-size:11px;bottom:24px}
+
+/* Efeitos visuais: carregamento da página e login */
+@keyframes appFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+body.auth-ready .app-shell{animation:appFade .55s cubic-bezier(.2,.8,.25,1) both}
+body.auth-ready .topbar{animation:appFade .45s ease both}
+.auth-gate{position:fixed;inset:0;z-index:220;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(150deg,#0b2818,#143b25 55%,#092718);overflow:auto}
+.auth-gate[hidden]{display:none}
+.auth-gate.closing{animation:authOut .38s ease forwards;pointer-events:none}
+@keyframes authOut{to{opacity:0;visibility:hidden}}
+.auth-card{width:min(408px,100%);background:#fff;border-radius:16px;padding:30px 28px 24px;box-shadow:0 30px 90px #03150c66;border:1px solid #e6e5de;animation:appFade .4s cubic-bezier(.2,.8,.25,1) both}
+.auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.auth-card h2{font-size:22px;margin:0 0 5px;color:#153522}
+.auth-sub{margin:0 0 18px;font-size:12px;color:#718075}
+.auth-card label{display:block;font-size:11px;font-weight:650;color:#314034;margin:0 0 5px}
+.auth-card input{width:100%;border:1px solid #d9dcd5;border-radius:8px;padding:11px;font-size:13px;margin-bottom:14px;outline:0;background:#fff;transition:border-color .18s,box-shadow .18s}
+.auth-card input:focus{border-color:#1c7043;box-shadow:0 0 0 3px rgba(31,112,66,.16)}
+.auth-submit{width:100%;justify-content:center;padding:12px}
+.auth-error{margin:0 0 12px;font-size:12px;color:#9f403e;background:#fff2f0;border:1px solid #f0d6d0;border-radius:8px;padding:9px 11px}
+.auth-hint{margin:16px 0 0;font-size:11px;color:#849087;text-align:center;line-height:1.5}
+.auth-hint b{color:#314034}
+@media(max-width:440px){.auth-card{padding:24px 20px 20px}.auth-gate{padding:14px}}
+</style>
+</head>
+<body>
+<!-- Autenticação local: bloqueia o sistema até o login. Usuários de demonstração. -->
+<div aria-labelledby="auth-title" aria-modal="true" class="auth-gate" id="auth-gate" role="dialog">
+  <form autocomplete="off" class="auth-card" id="auth-form">
+    <div class="auth-brand"><div class="mark">AP</div><div><div class="brand-name">ANA PASSOS</div><div class="brand-sub">ADVOCACIA E CONSULTORIA</div></div></div>
+    <h2 id="auth-title">Acesso ao sistema</h2>
+    <p class="auth-sub">Identifique-se para abrir o ambiente de homologação.</p>
+    <label for="auth-user">Usuário</label>
+    <input autocomplete="username" id="auth-user" name="user" required type="text"/>
+    <label for="auth-pass">Senha</label>
+    <input autocomplete="current-password" id="auth-pass" name="pass" required type="password"/>
+    <p class="auth-error" hidden="" id="auth-error" role="alert"></p>
+    <button class="btn btn-primary auth-submit" type="submit"><svg class="icon small"><use href="#i-lock"></use></svg> Entrar</button>
+    <p class="auth-hint">Acesso de demonstração — usuários <b>teste1</b>, <b>teste2</b> e <b>teste3</b> · senha <b>teste</b></p>
+  </form>
+</div>
+<!-- Ícones incorporados: nenhuma biblioteca ou internet necessária -->
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="i-file" viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M8 13h8M8 17h8"></path></symbol>
+<symbol id="i-user-plus" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6m-3-3h6"></path></symbol>
+<symbol id="i-users" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"></path></symbol>
+<symbol id="i-search" viewbox="0 0 24 24"><circle cx="10.8" cy="10.8" r="7.4"></circle><path d="m16.3 16.3 5 5"></path></symbol>
+<symbol id="i-edit" viewbox="0 0 24 24"><path d="m16 4 4 4-12 12-5 1 1-5zM14 6l4 4"></path></symbol>
+<symbol id="i-check" viewbox="0 0 24 24"><path d="m5 12 5 5L20 7"></path></symbol>
+<symbol id="i-chevron" viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></symbol>
+<symbol id="i-close" viewbox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></symbol>
+<symbol id="i-eye" viewbox="0 0 24 24"><path d="M2 12S5 5 12 5s10 7 10 7-3 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></symbol>
+<symbol id="i-list" viewbox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></symbol>
+<symbol id="i-shield" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-4"></path></symbol>
+<symbol id="i-phone" viewbox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.7 19.7 0 0 1-8.6-3.06 19.4 19.4 0 0 1-6-6A19.7 19.7 0 0 1 2.16 4.2 2 2 0 0 1 4.15 2h3a2 2 0 0 1 2 1.72l.45 3a2 2 0 0 1-.57 1.7L7.1 10.3a16 16 0 0 0 6.6 6.6l1.87-1.93a2 2 0 0 1 1.7-.56l3 .45A2 2 0 0 1 22 16.92Z"></path></symbol>
+<symbol id="i-pin" viewbox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></symbol>
+<symbol id="i-cards" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M8 7h8M8 11h8M8 15h5"></path></symbol>
+<symbol id="i-trash" viewbox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 15H6L5 6M10 10v7m4-7v7"></path></symbol>
+<symbol id="i-save" viewbox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"></path><path d="M7 3v6h9V3M7 21v-9h10v9"></path></symbol>
+<symbol id="i-next" viewbox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"></path></symbol>
+<symbol id="i-alert" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v5m0 4h.01"></path></symbol>
+<symbol id="i-spark" viewbox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"></path></symbol>
+<symbol id="i-arrow-back" viewbox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></symbol>
+<symbol id="i-logout" viewbox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5M21 12H9"></path></symbol>
+<symbol id="i-lock" viewbox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></symbol>
+</defs></svg>
+<header class="topbar" id="topbar"><div class="topline"><div class="brand"><div class="mark">AP</div><div><div class="brand-name">ANA PASSOS</div><div class="brand-sub">ADVOCACIA E CONSULTORIA</div></div></div><nav aria-label="Menu principal" class="nav"><button aria-current="page" class="nav-btn active" data-nav="inicio" type="button"><svg aria-hidden="true" class="icon"><use href="#i-cards"></use></svg><span>Início</span></button><button aria-current="false" class="nav-btn" data-nav="atendimento" type="button"><svg aria-hidden="true" class="icon"><use href="#i-users"></use></svg><span>Atendimento</span></button><button aria-current="false" class="nav-btn" data-nav="gerador" type="button"><svg aria-hidden="true" class="icon"><use href="#i-file"></use></svg><span>Gerador</span></button><button aria-current="false" class="nav-btn" data-nav="documentos" type="button"><svg aria-hidden="true" class="icon"><use href="#i-cards"></use></svg><span>Documentos</span></button><button aria-current="false" class="nav-btn" data-nav="relatorios" type="button"><svg aria-hidden="true" class="icon"><use href="#i-list"></use></svg><span>Relatórios</span></button><button aria-current="false" class="nav-btn" data-nav="administracao" type="button"><svg aria-hidden="true" class="icon"><use href="#i-shield"></use></svg><span>Administração</span></button></nav><div class="top-tools"><button aria-label="Visualizar fluxo" class="top-icon" id="flow-btn" title="Fluxo de atendimento"><svg class="icon"><use href="#i-spark"></use></svg></button><div class="avatar"><div class="avatar-circle" id="auth-initial">AP</div><div class="avatar-meta"><b id="auth-name">Ambiente demo</b><span id="auth-role">Sem conexão externa</span></div></div><button aria-label="Sair do sistema" class="top-icon" id="logout-btn" title="Sair"><svg class="icon"><use href="#i-logout"></use></svg></button></div></div><div class="decor"></div></header>
+<main class="app-shell"><section class="hero"><div><div class="overline">ESCRITÓRIO DIGITAL · ANA PASSOS ADVOCACIA</div><h1>Visão geral <em>V2.6 · CONCEITO 03</em></h1><p>Áreas independentes, fluxo de trabalho organizado e espaço para evoluir cada função.</p></div><div class="hero-meta"><div class="demo-pill"><span class="dot"></span> Protótipo offline · dados demonstrativos</div><button class="ghost-btn" id="design-info"><svg class="icon small"><use href="#i-eye"></use></svg>Sobre este protótipo</button></div></section><section aria-label="Painel inicial" class="module-view" data-section="inicio" id="view-inicio">
+<div class="module-heading"><div><span class="eyebrow">ESTRUTURA DO ESCRITÓRIO</span><h2>Escolha uma área para começar</h2><p>O menu superior organiza os ambientes. Cada ambiente terá suas próprias funções e etapas.</p></div><span class="edition-tag">Conceito não oficial</span></div>
+<div class="dept-grid">
+<button class="dept-card" data-go="atendimento"><span class="dept-art warm"><svg class="icon big"><use href="#i-users"></use></svg></span><small>ÁREA 01 · RELACIONAMENTO</small><strong>Atendimento</strong><p>Leads, qualificação e cadastro de clientes.</p><span class="dept-go">Abrir área <svg class="icon small"><use href="#i-next"></use></svg></span></button>
+<button class="dept-card" data-go="gerador"><span class="dept-art green"><svg class="icon big"><use href="#i-file"></use></svg></span><small>ÁREA 02 · PRODUÇÃO</small><strong>Gerador de contratos</strong><p>Seleção de clientes, preparação e prévia documental.</p><span class="dept-go">Abrir área <svg class="icon small"><use href="#i-next"></use></svg></span></button>
+<button class="dept-card" data-go="documentos"><span class="dept-art muted"><svg class="icon big"><use href="#i-cards"></use></svg></span><small>ÁREA 03 · ARQUIVO</small><strong>Documentos</strong><p>Modelos, versões e organização de arquivos.</p><span class="dept-go">Abrir área <svg class="icon small"><use href="#i-next"></use></svg></span></button>
+</div>
+<div class="module-heading sub-head"><div><span class="eyebrow">ORGANIZAÇÃO INTERNA</span><h2>Camadas previstas</h2><p>Estas divisões são ideias de estrutura para discutirmos, não recursos implementados.</p></div></div>
+<div class="folder-grid">
+<button class="folder-card" data-go="atendimento"><span class="folder-symbol">01</span><div><b>Captação e triagem</b><small>Lead → Qualificação → Cliente</small></div><svg class="icon small"><use href="#i-chevron"></use></svg></button>
+<button class="folder-card" data-go="gerador"><span class="folder-symbol">02</span><div><b>Produção contratual</b><small>Cliente → Revisão → Prévia</small></div><svg class="icon small"><use href="#i-chevron"></use></svg></button>
+<button class="folder-card" data-go="relatorios"><span class="folder-symbol">03</span><div><b>Acompanhamento</b><small>Indicadores e produtividade · a definir</small></div><svg class="icon small"><use href="#i-chevron"></use></svg></button>
+<button class="folder-card" data-go="administracao"><span class="folder-symbol">04</span><div><b>Administração</b><small>Integrações e acessos · a definir</small></div><svg class="icon small"><use href="#i-chevron"></use></svg></button>
+</div>
+<div class="soft-banner"><svg class="icon"><use href="#i-shield"></use></svg><span>Ambiente de demonstração. Nenhuma ação consulta o AppSheet ou cria um DOCX real.</span></div>
+</section><section class="module-view" data-section="atendimento" hidden="" id="view-atendimento"><div aria-label="Escolha a operação" class="choice-row" role="tablist"><button aria-selected="false" class="choice" data-mode="lead" role="tab" type="button"><span class="choice-icon"><svg class="icon big"><use href="#i-user-plus"></use></svg></span><span class="choice-main"><span class="choice-title">Adicionar lead</span><span class="choice-desc">Inicie com nome, telefone e interesse do contato.</span></span><span aria-hidden="true" class="choice-check"></span></button><button aria-selected="true" class="choice active" data-mode="search" role="tab" type="button"><span class="choice-icon"><svg class="icon big"><use href="#i-search"></use></svg></span><span class="choice-main"><span class="choice-title">Buscar cliente</span><span class="choice-desc">Localize um lead ou cliente e continue o atendimento.</span></span><span aria-hidden="true" class="choice-check"></span></button><button aria-selected="false" class="choice" data-mode="client" role="tab" type="button"><span class="choice-icon"><svg class="icon big"><use href="#i-users"></use></svg></span><span class="choice-main"><span class="choice-title">Cadastrar cliente</span><span class="choice-desc">Prepare um cadastro completo para gerar documentos.</span></span><span aria-hidden="true" class="choice-check"></span></button></div><div class="workspace-grid"><div class="left-stage"><section aria-live="polite" class="panel" id="main-panel"></section></div><aside class="aside-stage"><section aria-label="Painel contextual" class="panel context"><div class="context-tabs" role="tablist"><button class="context-tab active" data-side="summary" role="tab"><svg class="icon small"><use href="#i-users"></use></svg>Resumo</button><button class="context-tab" data-side="preview" role="tab"><svg class="icon small"><use href="#i-eye"></use></svg>Prévia DOCX</button><button class="context-tab" data-side="steps" role="tab"><svg class="icon small"><use href="#i-list"></use></svg>Próximas etapas</button></div><div class="context-content" id="context-content"></div></section></aside></div></section><section class="module-view" data-section="gerador" hidden="" id="view-gerador">
+<div class="module-heading"><div><span class="eyebrow">ÁREA DE PRODUÇÃO / DOCUMENTOS CONTRATUAIS</span><h2>Preparar documento</h2><p>Esta área não é um cadastro: usa as informações já coletadas para revisar e visualizar os documentos.</p></div><span class="edition-tag">Fluxo demonstrativo</span></div>
+<div class="layer-path"><span class="path-active">01 · Selecionar cadastro</span><span>02 · Revisar dados</span><span>03 · Visualizar documentos</span><span class="path-muted">04 · Gerar DOCX (futuro)</span></div>
+<div id="generator-inner"></div>
+</section><section class="module-view" data-section="documentos" hidden="" id="view-documentos">
+<div class="module-heading"><div><span class="eyebrow">ARQUIVO / MODELOS</span><h2>Biblioteca de documentos</h2><p>Uma futura área para consultar modelos, identificar versões e acompanhar documentos gerados.</p></div><span class="edition-tag">Estrutura em definição</span></div>
+<div class="layer-path"><span class="path-active">Modelos jurídicos</span><span>Documentos gerados · futuro</span><span>Histórico de versões · futuro</span></div>
+<div class="document-grid">
+<button class="document-tile" data-preview-doc="0"><span class="file-icon"><svg class="icon big"><use href="#i-file"></use></svg></span><strong>Página 1</strong><small>Contrato · qualificação das partes</small><span>Abrir página →</span></button>
+<button class="document-tile" data-preview-doc="1"><span class="file-icon"><svg class="icon big"><use href="#i-file"></use></svg></span><strong>Página 2</strong><small>Contrato · objeto e poderes</small><span>Abrir página →</span></button>
+<button class="document-tile" data-preview-doc="2"><span class="file-icon"><svg class="icon big"><use href="#i-file"></use></svg></span><strong>Página 3</strong><small>Contrato · honorários</small><span>Abrir página →</span></button>
+<button class="document-tile" data-preview-doc="3"><span class="file-icon"><svg class="icon big"><use href="#i-file"></use></svg></span><strong>Página 4</strong><small>Contrato · declarações</small><span>Abrir página →</span></button>
+<button class="document-tile" data-preview-doc="4"><span class="file-icon"><svg class="icon big"><use href="#i-file"></use></svg></span><strong>Página 5</strong><small>Contrato · vigência e foro</small><span>Abrir página →</span></button>
+<button class="document-tile" data-preview-doc="5"><span class="file-icon"><svg class="icon big"><use href="#i-file"></use></svg></span><strong>Página 6</strong><small>Contrato · assinaturas</small><span>Abrir página →</span></button>
+</div>
+<div class="module-placeholder"><span class="stamp">EM DEFINIÇÃO</span><h3>Histórico e organização de arquivos</h3><p>Quando definirmos a infraestrutura, esta área poderá separar modelos, arquivos gerados e documentos associados a cada cliente. Nada disso está conectado nesta demonstração.</p></div>
+</section><section class="module-view" data-section="relatorios" hidden="" id="view-relatorios">
+<div class="module-heading"><div><span class="eyebrow">GESTÃO / INDICADORES</span><h2>Relatórios</h2><p>Espaço reservado para acompanhar etapas e resultados do atendimento.</p></div><span class="edition-tag">A definir</span></div>
+<div class="placeholder-two"><div class="module-placeholder"><span class="stamp">PRÓXIMA ETAPA</span><h3>Visão de funil</h3><p>Quais indicadores fazem sentido para o escritório? Leads recebidos, em qualificação, clientes e contratos são possibilidades a debater.</p><div class="quiet-lines"><i></i><i></i><i></i></div></div><div class="module-placeholder"><span class="stamp">PRÓXIMA ETAPA</span><h3>Produtividade e períodos</h3><p>Definiremos filtros, períodos, responsabilidades e a fonte dos números antes de programar gráficos ou métricas.</p><div class="quiet-lines"><i></i><i></i><i></i></div></div></div>
+</section><section class="module-view" data-section="administracao" hidden="" id="view-administracao">
+<div class="module-heading"><div><span class="eyebrow">AMBIENTE / GOVERNANÇA</span><h2>Administração</h2><p>Organização futura de permissões, conexões e configurações.</p></div><span class="edition-tag">Sem funções sensíveis ativas</span></div>
+<div class="admin-grid">
+<button class="setting-tile" data-placeholder="Acessos e perfis"><span class="file-icon"><svg class="icon"><use href="#i-users"></use></svg></span><b>Perfis e permissões</b><small>Quem poderá consultar, cadastrar e gerar.</small><em>Definir amanhã</em></button>
+<button class="setting-tile" data-placeholder="Integração AppSheet"><span class="file-icon"><svg class="icon"><use href="#i-cards"></use></svg></span><b>Integração AppSheet</b><small>Conexão, sincronização e disponibilidade.</small><em>Definir amanhã</em></button>
+<button class="setting-tile" data-placeholder="Segurança e LGPD"><span class="file-icon"><svg class="icon"><use href="#i-shield"></use></svg></span><b>Segurança e LGPD</b><small>Políticas, descarte, registro e auditoria.</small><em>Definir amanhã</em></button>
+<button class="setting-tile" data-placeholder="Identidade e apresentação"><span class="file-icon"><svg class="icon"><use href="#i-edit"></use></svg></span><b>Identidade visual</b><small>Paleta, tipografia e componentes.</small><em>Definir amanhã</em></button>
+</div>
+</section>
+
+
+<div class="footer">ANA PASSOS · Laboratório visual de interface <span>✦</span> Somente demonstração: nenhum dado é enviado ou salvo fora desta página.</div>
+</main>
+<div class="overlay-backdrop" hidden="" id="modal-root"><section aria-labelledby="modal-title" aria-modal="true" class="modal" role="dialog"><div class="modal-top"><div><div class="micro-label">AMBIENTE DE HOMOLOGAÇÃO</div><h3 id="modal-title">Detalhes</h3><p id="modal-sub"></p></div><button aria-label="Fechar" class="close-btn" data-close="modal"><svg class="icon"><use href="#i-close"></use></svg></button></div><div class="modal-content" id="modal-content"></div><div class="modal-actions" id="modal-actions"></div></section></div>
+<div class="drawer-root" hidden="" id="drawer-root"><div class="drawer-scrim" data-close="drawer"></div><section aria-label="Prévia ampliada" aria-modal="true" class="drawer" role="dialog"><div class="drawer-header"><div><div class="micro-label">MODELO VISUAL · NÃO É UM DOCX REAL</div><h2>Pré-visualização</h2></div><button aria-label="Fechar pré-visualização" class="close-btn" data-close="drawer"><svg class="icon"><use href="#i-close"></use></svg></button></div><div class="drawer-body" id="drawer-body"></div></section></div>
+<div aria-live="polite" class="toast-wrap" id="toast-wrap"></div>
+<script>
+'use strict';
+// Estado 100% local: nenhum armazenamento persistente, requisição HTTP ou integração com o AppSheet.
+const initialPeople = [
+  {id:'CLI001',name:'João da Silva Teste',phone:'(48) 90000-0001',cpf:'000.000.000-00',rg:'RG-TESTE-001',status:'cliente',kind:'aposentadoria',age:'62',contrib:'28',rural:'sim',military:'nao',cep:'88801-000',street:'Rua das Acácias',number:'120',neighborhood:'Centro',city:'Criciúma',state:'SC',type:'adulto',notes:'Cadastro demonstrativo completo.'},
+  {id:'CLI002',name:'Maria Oliveira Exemplo',phone:'(48) 90000-0002',cpf:'111.111.111-11',status:'cliente',kind:'bpc',bpcType:'idoso',income:'1.200,00',laudo:'nao',city:'Içara',state:'SC',type:'adulto'},
+  {id:'LEAD03',name:'Claudio Santos',phone:'(48) 90000-0003',cpf:'',status:'lead',kind:'indefinido',notes:'Perguntou sobre o benefício por mensagem.'},
+  {id:'LEAD04',name:'Marina Criança Fictícia',phone:'(48) 90000-0004',cpf:'',status:'qualificacao',kind:'bpc',bpcType:'tea',type:'menor',notes:'Aguardando documentos da responsável.'}
+];
+let people = initialPeople.map(p=>({...p}));
+const state = {module:'inicio', generatorDraft:null, mode:'search',side:'summary',selectedId:'CLI001',filter:'todos',query:'',kind:'aposentadoria',type:'adulto',bpcType:'idoso',draft:{},editingId:null,docIndex:0,started:false,draftCache:Object.create(null)};
+const $ = (s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const icon=(name,cls='')=>`<svg class="icon ${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const esc=(v='')=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const current=()=>people.find(x=>x.id===state.selectedId)||null;
+const titleFor=(s)=>({lead:'Lead',qualificacao:'Em qualificação',cliente:'Cliente'}[s]||'Contato');
+const labelFor=(k)=>({aposentadoria:'Aposentadoria',bpc:'BPC/LOAS',indefinido:'A definir'}[k]||'A definir');
+const initial=(name='?')=>String(name).trim().split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+// Rascunhos isolados por tela/registro. Permanecem somente na memória até recarregar a página.
+function draftKey(mode=state.mode,id=state.editingId){return mode==='lead'?'new-lead':mode==='client'?(id?'edit:'+id:'new-client'):null}
+function preserveDraft(){
+  const key=draftKey();
+  if(!key)return;
+  collect();
+  state.draftCache[key]={draft:{...state.draft},kind:state.kind,type:state.type,bpcType:state.bpcType,editingId:state.editingId};
+}
+function setMode(mode,prefill=null){
+  if(state.module!=='atendimento')setModule('atendimento');
+  // Selecionar novamente a tela corrente não deve reinicializar o formulário.
+  if(mode===state.mode && (!prefill || (mode==='client' && prefill.id===state.editingId)))return;
+  preserveDraft();
+  state.mode=mode;
+  if(mode==='lead'||mode==='client'){
+    const key=mode==='lead'?'new-lead':(prefill?.id?'edit:'+prefill.id:'new-client');
+    const saved=state.draftCache[key];
+    const base=saved?.draft||prefill||{};
+    state.draft={...base};
+    state.editingId=mode==='client'?(prefill?.id||saved?.editingId||null):null;
+    state.kind=saved?.kind||(base.kind==='bpc'?'bpc':'aposentadoria');
+    state.type=saved?.type||base.type||'adulto';
+    state.bpcType=saved?.bpcType||base.bpcType||'idoso';
+  }
+  $$('[data-mode]').forEach(el=>{let active=el.dataset.mode===mode;el.classList.toggle('active',active);el.setAttribute('aria-selected',String(active))});
+  // Menu principal refere-se apenas à área; os modos são tarefas internas.
+  renderMain();renderAside();
+}
+
+const moduleTitles={
+ inicio:['ESCRITÓRIO DIGITAL · ANA PASSOS ADVOCACIA','Visão geral','Áreas independentes, fluxo de trabalho organizado e espaço para evoluir cada função.'],
+ atendimento:['ÁREA 01 / RELACIONAMENTO','Atendimento','Crie leads, complete cadastros e acompanhe a qualificação em um único lugar.'],
+ gerador:['ÁREA 02 / PRODUÇÃO','Gerador de contratos','Selecione um registro, revise e navegue pelos modelos de documentos.'],
+ documentos:['ÁREA 03 / ARQUIVO','Documentos','Organização dos modelos e arquivos do escritório.'],
+ relatorios:['ÁREA 04 / GESTÃO','Relatórios','Indicadores e acompanhamento do escritório, ainda por definir.'],
+ administracao:['ÁREA 05 / AMBIENTE','Administração','Configurações e permissões serão definidas em uma etapa futura.']
+};
+function setModule(module){
+ if(!moduleTitles[module])return;
+ if(state.module!==module)preserveDraft();
+ state.module=module;
+ $$('[data-section]').forEach(el=>{el.hidden=el.dataset.section!==module});
+ $$('[data-nav]').forEach(btn=>{const active=btn.dataset.nav===module;btn.classList.toggle('active',active);btn.setAttribute('aria-current',active?'page':'false')});
+ const info=moduleTitles[module];
+ $('.hero .overline').textContent=info[0];
+ $('.hero h1').innerHTML=esc(info[1])+' <em>V2.6 · CONCEITO 03</em>';
+ $('.hero p').textContent=info[2];
+ if(module==='gerador')renderGeneratorModule();
+ if(module==='atendimento'){$$('[data-mode]').forEach(btn=>{let active=btn.dataset.mode===state.mode;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active))});renderMain();renderAside();}
+ const activeView=$(`[data-section="${module}"]`);
+ if(activeView)requestAnimationFrame(()=>setupScrollReveal(activeView));
+ window.scrollTo({top:0,behavior:'auto'});
+}
+function renderGeneratorModule(){
+ const root=$('#generator-inner');if(!root)return;
+ const p=state.generatorDraft||current();
+ const opts=people.filter(x=>x.status==='cliente').map(x=>`<option value="${esc(x.id)}" ${p?.id===x.id?'selected':''}>${esc(x.name)}</option>`).join('');
+ root.innerHTML=`<div class="generator-grid">
+  <section class="panel generator-card"><h3>Dados para a preparação</h3><p class="muted-desc">Uma área separada do cadastro. Nesta demonstração, o gerador apenas exibe a prévia ilustrativa.</p>
+   <div class="field"><label for="generator-client">Cliente selecionado</label><select id="generator-client"><option value="">Selecione um cliente</option>${opts}</select></div>
+   <div class="mini-notice">${icon('shield')}<span>Aqui ficarão, futuramente, as verificações contratuais, seleção de maior/menor e honorários, sem alterar dados cadastrais automaticamente.</span></div>
+   <div class="folder-grid" style="grid-template-columns:1fr;margin-top:17px">
+   <button class="folder-card" data-go="atendimento" data-workflow="search"><span class="folder-symbol">01</span><div><b>Consultar ou completar cadastro</b><small>Abra Atendimento e localize as informações faltantes.</small></div>${icon('chevron','small')}</button>
+   <button class="folder-card" data-go="documentos"><span class="folder-symbol">02</span><div><b>Consultar modelos disponíveis</b><small>Abra a biblioteca documental.</small></div>${icon('chevron','small')}</button>
+   </div><div class="generator-actions"><button class="btn btn-primary" type="button" data-action="drawer">${icon('eye','small')} Ampliar prévia</button><button class="btn btn-neutral" type="button" data-generator-info>Gerar DOCX · futuro</button></div>
+  </section>
+  <section class="panel generator-card"><span class="preview-tag">PRÉ-VISUALIZAÇÃO VISUAL</span><h3 style="margin-top:7px">${esc(docs[state.docIndex].title)}</h3><p class="muted-desc">${esc(p?.name||'Selecione um cliente para começar')}</p>
+  ${paper(p)}${docNavigation()}<div class="mini-notice">${icon('alert','small')}<span>Esta prévia é ilustrativa e não representa a formatação final dos DOCX aprovados.</span></div></section>
+  </div>`;
+}
+
+function side(name){state.side=name;$$('[data-side]').forEach(el=>el.classList.toggle('active',el.dataset.side===name));renderAside();}
+const fieldRules={cpf:{mask:'cpf',maxlength:14,inputmode:'numeric'},guardianCpf:{mask:'cpf',maxlength:14,inputmode:'numeric'},phone:{mask:'phone',maxlength:15,inputmode:'tel'},rg:{mask:'rg',maxlength:20,inputmode:'text'},cep:{mask:'cep',maxlength:9,inputmode:'numeric'},state:{mask:'uf',maxlength:2,inputmode:'text'}};
+function field(name,label,span=4,ph='',value='',required=false,extra=''){
+  const rule=fieldRules[name];
+  const attr=rule?` data-mask="${rule.mask}" maxlength="${rule.maxlength}" inputmode="${rule.inputmode}" autocomplete="off"`:'';
+  const help=name==='rg'?'<small class="field-help">Máscara automática para 9 caracteres numéricos; outros formatos de RG também são aceitos.</small>':'';
+  return `<div class="field c${span}"><label for="fld-${name}">${label}${required?' <span class="req">*</span>':''}</label><input id="fld-${name}" data-field="${name}" value="${esc(value)}" ${attr} ${extra}>${help}</div>`;
+}
+function section(n,label,sub,body){return `<section class="section-block"><div class="section-head"><span class="number">${n}</span><div class="section-note"><h3>${label}</h3><p>${sub}</p></div></div><div class="form-content">${body}</div></section>`}
+function typeSelector(){return `<div class="type-grid"><button type="button" data-kind="aposentadoria" class="type-card ${state.kind==='aposentadoria'?'active':''}">${icon('shield','big')}<span><b>Aposentadoria</b><small>Idade, contribuição, trabalho rural e outras informações.</small></span><span class="type-indicator"></span></button><button type="button" data-kind="bpc" class="type-card ${state.kind==='bpc'?'active':''}">${icon('users','big')}<span><b>BPC/LOAS</b><small>Idoso ou TEA, renda familiar e documentação.</small></span><span class="type-indicator"></span></button></div>`}
+function peopleType(){return `<div class="seg" aria-label="Tipo de contrato"><button type="button" data-person="adulto" class="${state.type==='adulto'?'active':''}">Maior de idade</button><button type="button" data-person="menor" class="${state.type==='menor'?'active':''}">Menor / responsável</button></div>`}
+function formClient(){let d=state.draft;let body=section('01','Tipo de atendimento','Exibe somente os campos relevantes.',typeSelector())+
+ section('02','Dados de identificação','Informações que constarão nos documentos.',`<div style="margin-bottom:12px">${peopleType()}</div><div class="form-grid">${field('name','Nome completo',8,'Nome completo',d.name||'',true)}${field('cpf','CPF',4,'CPF',d.cpf||'',true)}${field('rg','RG',4,'RG',d.rg||'')}${field('phone','Telefone',4,'Telefone',d.phone||'',true)}${field('civil','Estado civil',4,'Estado civil',d.civil||'')}</div>${state.type==='menor'?`<div class="hint-strip green">${icon('alert','small')} Cadastro de menor: os dados do responsável são obrigatórios para os documentos.</div><div class="form-grid" style="margin-top:12px">${field('guardian','Nome do responsável',6,'Nome completo',d.guardian||'',true)}${field('guardianCpf','CPF do responsável',6,'CPF do responsável',d.guardianCpf||'',true)}</div>`:''}`)+
+ section('03','Endereço','Utilizado na qualificação do contratante.',`<div class="form-grid">${field('cep','CEP',3,'CEP',d.cep||'')}${field('street','Rua',6,'Logradouro',d.street||'')}${field('number','Número',3,'Número',d.number||'')}${field('neighborhood','Bairro',4,'Bairro',d.neighborhood||'')}${field('city','Cidade',5,'Cidade',d.city||'')}${field('state','UF',3,'UF',d.state||'')}</div>`)+
+ section('04',`Informações do caso — ${labelFor(state.kind)}`,'Campos específicos do atendimento.',state.kind==='aposentadoria'?`<div class="form-grid">${field('age','Idade',3,'Idade',d.age||'')}${field('contrib','Tempo de contribuição',3,'Tempo em anos',d.contrib||'')}<div class="field c3"><label>Trabalhou na roça?</label><select data-field="rural"><option value=""></option><option value="sim" ${d.rural==='sim'?'selected':''}>Sim</option><option value="nao" ${d.rural==='nao'?'selected':''}>Não</option></select></div><div class="field c3"><label>Serviço militar?</label><select data-field="military"><option value=""></option><option value="sim" ${d.military==='sim'?'selected':''}>Sim</option><option value="nao" ${d.military==='nao'?'selected':''}>Não</option></select></div></div><div class="hint-strip">${icon('alert','small')} Campos demonstrativos de triagem: não determinam elegibilidade nem alteram cláusulas jurídicas.</div>`:`<div class="entry-options" style="margin-bottom:12px"><button class="radio-pill ${state.bpcType==='idoso'?'selected':''}" type="button" data-bpc="idoso"><span class="radio-round"></span>BPC Idoso</button><button class="radio-pill ${state.bpcType==='tea'?'selected':''}" type="button" data-bpc="tea"><span class="radio-round"></span>BPC/TEA</button></div><div class="form-grid">${field('income','Renda familiar aproximada',6,'Renda familiar',d.income||'')}<div class="field c6"><label>Possui laudo médico?</label><select data-field="laudo"><option value=""></option><option value="sim" ${d.laudo==='sim'?'selected':''}>Sim</option><option value="nao" ${d.laudo==='nao'?'selected':''}>Não</option></select></div></div><div class="hint-strip">${icon('alert','small')} Campos apenas de triagem. Os documentos e critérios precisam de revisão jurídica.</div>`);
+ return `<div class="stage-in"><div class="panel-head"><span class="round-symbol">${icon('users','big')}</span><div><h2>${state.editingId?'Completar ou editar cadastro':'Cadastrar cliente'}</h2><p>${state.editingId?'Informações importadas do registro selecionado.':'Preencha o cadastro completo para simular as próximas ações.'}</p></div></div>${body}<footer class="action-footer"><button class="btn btn-neutral" data-action="clear">${icon('trash','small')} Limpar campos</button><div class="action-right"><button class="btn btn-gold" data-action="save-client">${icon('save','small')} ${state.editingId?'Atualizar cadastro':'Salvar cliente'}</button><button class="btn btn-primary" data-action="generate">${icon('file','small')} Ver contrato ${icon('next','small')}</button></div></footer></div>`}
+function formLead(){const d=state.draft;return `<div class="stage-in"><div class="panel-head"><span class="round-symbol">${icon('user-plus','big')}</span><div><h2>Adicionar lead</h2><p>Comece com o mínimo. Os demais dados podem ser adicionados depois.</p></div></div>${section('01','Contato inicial','Não é necessário possuir CPF ou documentação.',`<div class="form-grid">${field('name','Nome do contato',6,'Nome do contato',d.name||'',true)}${field('phone','Telefone / WhatsApp',6,'Telefone',d.phone||'',true)}<div class="field c6"><label>Origem do contato</label><select data-field="origin"><option value="Anúncio" ${d.origin==='Anúncio'?'selected':''}>Anúncio</option><option value="WhatsApp" ${d.origin==='WhatsApp'?'selected':''}>WhatsApp</option><option value="Indicação" ${d.origin==='Indicação'?'selected':''}>Indicação</option><option value="Outro" ${d.origin==='Outro'?'selected':''}>Outro</option></select></div><div class="field c6"><label>Assunto provável</label><select data-field="kind"><option value="indefinido">A definir</option><option value="aposentadoria" ${d.kind==='aposentadoria'?'selected':''}>Aposentadoria</option><option value="bpc" ${d.kind==='bpc'?'selected':''}>BPC/LOAS</option></select></div><div class="field c12"><label>Observação inicial</label><textarea data-field="notes" >${esc(d.notes||'')}</textarea></div></div>`)}${section('02','Evolução do atendimento','O mesmo registro pode ser promovido a cliente.',`<div class="entry-options"><span class="radio-pill selected">${icon('check','small')} Lead criado</span><span class="radio-pill">Em qualificação</span><span class="radio-pill">Cliente</span></div><div class="hint-strip green">${icon('shield','small')} Ao completar o cadastro, reaproveitaremos o mesmo ID em vez de duplicar o cliente.</div>`)}<footer class="action-footer"><button class="btn btn-neutral" data-action="clear">${icon('trash','small')} Limpar</button><div class="action-right"><button class="btn btn-gold" data-action="save-lead">${icon('save','small')} Salvar lead (demo)</button></div></footer></div>`}
+function searchResults(){let q=state.query.trim().toLowerCase();return people.filter(p=>(state.filter==='todos'||state.filter===p.status)&&(!q||[p.id,p.name,p.phone,p.cpf].some(v=>String(v||'').toLowerCase().includes(q))))}
+function formSearch(){let results=searchResults(),p=current();return `<div class="stage-in"><div class="panel-head"><span class="round-symbol">${icon('search','big')}</span><div><h2>Buscar cliente ou lead</h2><p>Localize por nome, CPF, telefone ou identificador do cadastro.</p></div></div><div class="search-section"><div class="search-box"><div class="search-wrap">${icon('search')}<input id="search-query" class="search-input" value="${esc(state.query)}" autocomplete="off" aria-label="Buscar cadastro"></div><button class="btn btn-primary" data-action="do-search">Buscar</button></div><div class="search-controls">${['todos','lead','qualificacao','cliente'].map(k=>`<button class="filter-btn ${state.filter===k?'active':''}" data-filter="${k}">${k==='todos'?'Todos':titleFor(k)}</button>`).join('')}</div></div><div class="result-list" id="result-list">${results.length?results.map(r=>`<button class="result ${state.selectedId===r.id?'active':''}" data-select="${esc(r.id)}"><span class="result-avatar">${esc(initial(r.name))}</span><span class="result-text"><b>${esc(r.name)}</b><small>${esc(r.phone||'Telefone não informado')} &nbsp;·&nbsp; ${esc(r.id)} &nbsp;·&nbsp; ${esc(labelFor(r.kind))}</small></span><span class="status-pill ${r.status}">${titleFor(r.status)}</span>${icon('chevron','small')}</button>`).join(''):'<div class="notice-inline">Nenhum resultado encontrado. Você pode iniciar um novo lead.</div>'}</div>${p?`<div class="editor-banner reveal-in"><div class="result-avatar">${esc(initial(p.name))}</div><div style="flex:1"><b>${esc(p.name)}</b><small>${esc(titleFor(p.status))} · ${esc(p.id)}</small></div><button class="btn btn-neutral" data-action="edit-selected">${icon('edit','small')} ${p.status==='cliente'?'Editar':'Completar cadastro'}</button></div><div class="section-block"><div class="section-head"><span class="number">✓</span><div><h3>Continuidade do atendimento</h3><p style="font-size:11px;color:var(--muted);margin:3px 0 0">Ações possíveis para o cadastro selecionado</p></div></div><div class="form-content"><div class="entry-options"><button class="radio-pill" data-action="edit-selected">${icon('edit','small')} Atualizar informações</button>${p.status!=='cliente'?`<button class="radio-pill" data-action="promote">${icon('users','small')} Promover a cliente</button>`:''}<button class="radio-pill" data-action="preview-selected">${icon('eye','small')} Pré-visualizar contrato</button></div></div></div>`:''}<footer class="action-footer"><div class="tiny-copy">Cadastros de demonstração · não sincronizados</div><div class="action-right"><button class="btn btn-gold" data-action="new-lead">${icon('user-plus','small')} Novo lead</button><button class="btn btn-primary" data-action="new-client">${icon('users','small')} Novo cliente</button></div></footer></div>`}
+
+// Feedback 02 — revela seções e grupos de campos quando chegam à área visível.
+// Não anima o painel direito a cada digitação e respeita "reduzir movimento".
+const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const scrollRevealObserver = (!reducedMotion && 'IntersectionObserver' in window)
+  ? new IntersectionObserver(entries=>{
+      for(const entry of entries){
+        if(!entry.isIntersecting)continue;
+        entry.target.classList.remove('reveal-pending');
+        entry.target.classList.add('reveal-enter');
+        scrollRevealObserver.unobserve(entry.target);
+      }
+    },{threshold:0.04,rootMargin:'0px 0px 36px 0px'})
+  : null;
+function setupScrollReveal(root=document){
+  const nodes=root.querySelectorAll('.section-block, .section-block .field, .search-section, .result-list .result, .dept-card, .folder-card, .document-tile, .setting-tile, .module-placeholder, .generator-card');
+  for(const el of nodes){
+    if(el.dataset.revealSetup==='1')continue;
+    el.dataset.revealSetup='1';
+    el.classList.add('scroll-reveal');
+    // Elementos já visíveis não devem piscar ou desaparecer momentaneamente.
+    const rect=el.getBoundingClientRect();
+    if(!scrollRevealObserver || (rect.top < window.innerHeight-10 && rect.bottom>0))continue;
+    el.classList.add('reveal-pending');
+    scrollRevealObserver.observe(el);
+  }
+}
+
+function renderMain(){const el=$('#main-panel');el.innerHTML=state.mode==='lead'?formLead():state.mode==='client'?formClient():formSearch();if(state.mode==='search')updateResults(false);setupScrollReveal(el);}
+function updateResults(quiet=true){if(state.mode!=='search')return;let el=$('#result-list');if(!el)return;let results=searchResults();el.innerHTML=results.length?results.map(r=>`<button class="result ${state.selectedId===r.id?'active':''}" data-select="${esc(r.id)}"><span class="result-avatar">${esc(initial(r.name))}</span><span class="result-text"><b>${esc(r.name)}</b><small>${esc(r.phone||'Telefone não informado')} &nbsp;·&nbsp; ${esc(r.id)} &nbsp;·&nbsp; ${esc(labelFor(r.kind))}</small></span><span class="status-pill ${r.status}">${titleFor(r.status)}</span>${icon('chevron','small')}</button>`).join(''):'<div class="notice-inline">Nenhum resultado. Você pode cadastrar um novo lead.</div>';$$('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===state.filter));}
+// Máscaras de apresentação; não substituem validação documental/CPF em produção.
+const onlyDigits=v=>String(v||'').replace(/\D/g,'');
+function maskValue(mask,value){
+  if(mask==='cpf'){
+    const d=onlyDigits(value).slice(0,11);
+    return d.slice(0,3)+(d.length>3?'.'+d.slice(3,6):'')+(d.length>6?'.'+d.slice(6,9):'')+(d.length>9?'-'+d.slice(9):'');
+  }
+  if(mask==='phone'){
+    const d=onlyDigits(value).slice(0,11);
+    if(!d)return '';
+    if(d.length<3)return '('+d;
+    const part=d.slice(2),split=d.length>10?5:4;
+    return '('+d.slice(0,2)+') '+part.slice(0,split)+(part.length>split?'-'+part.slice(split):'');
+  }
+  if(mask==='cep'){
+    const d=onlyDigits(value).slice(0,8);
+    return d.slice(0,5)+(d.length>5?'-'+d.slice(5):'');
+  }
+  if(mask==='uf')return String(value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,2);
+  if(mask==='rg'){
+    const texto=String(value||'').toUpperCase().replace(/[^A-Z0-9.\-/ ]/g,'').replace(/ {2,}/g,' ').slice(0,20);
+    const semSeparadores=texto.replace(/[.\-\s]/g,'');
+    // Para RG numérico no padrão de nove caracteres, pontuação progressiva XX.XXX.XXX-X.
+    // Um X no último caractere é aceito como dígito verificador.
+    // Outros RGs (ex.: MG-12.345.678) são mantidos no formato informado.
+    if(/^\d{1,9}$/.test(semSeparadores)||/^\d{8}X$/.test(semSeparadores)){
+      const d=semSeparadores.slice(0,9);
+      return d.slice(0,2)+(d.length>2?'.'+d.slice(2,5):'')+
+        (d.length>5?'.'+d.slice(5,8):'')+(d.length>8?'-'+d.slice(8,9):'');
+    }
+    return texto;
+  }
+  return value;
+}
+function formatInput(el){
+  const before=el.value, caret=el.selectionStart ?? before.length;
+  const counted=el.dataset.mask==='rg'||el.dataset.mask==='uf' ? before.slice(0,caret).replace(/[^A-Za-z0-9]/g,'').length : onlyDigits(before.slice(0,caret)).length;
+  const after=maskValue(el.dataset.mask,before);
+  if(after===before)return;
+  el.value=after;
+  let pos=0,seen=0;
+  for(;pos<after.length;pos++){
+    if(/[A-Za-z0-9]/.test(after[pos]))seen++;
+    if(seen>=counted && counted>0){pos++;break}
+  }
+  try{el.setSelectionRange(counted?pos:0,counted?pos:0)}catch{}
+}
+function updateSummaryQuiet(){
+  // Somente troca conteúdo textual; não remove o painel, nem reinicia animações.
+  if(state.side!=='summary')return;
+  const p=contextPerson()||{};
+  const vals={name:p.name||'Novo contato',initial:initial(p.name||'?'),phone:p.phone||'Não informado',cpf:p.cpf||'Não informado',location:(p.city||'Não informada')+(p.state?' / '+p.state:''),benefit:labelFor(p.kind||state.kind),progress:completeness(p)+'%'};
+  Object.entries(vals).forEach(([key,val])=>{const node=$(`[data-summary="${key}"]`,$('#context-content'));if(node)node.textContent=val});
+  const bar=$('[data-summary-progress]',$('#context-content'));if(bar)bar.style.width=completeness(p)+'%';
+}
+function docNav(direction){
+  const next=Math.max(0,Math.min(docs.length-1,state.docIndex+direction));
+  if(next===state.docIndex)return;
+  state.docIndex=next;
+  if(!$('#drawer-root').hidden)updateDrawer();
+  if(state.side==='preview')renderAside();
+  if(state.module==='gerador')renderGeneratorModule();
+}
+function docNavigation(){
+  return `<div class="doc-navigation" role="group" aria-label="Navegação entre páginas do contrato">
+    <button type="button" class="doc-nav-btn" data-doc-nav="-1" ${state.docIndex===0?'disabled':''} aria-label="Página anterior"><span aria-hidden="true">←</span> <span>Anterior</span></button>
+    <div class="doc-nav-meta"><b>${esc(docs[state.docIndex].title)}</b><small>Página ${state.docIndex+1} de ${docs.length}</small></div>
+    <button type="button" class="doc-nav-btn" data-doc-nav="1" ${state.docIndex===docs.length-1?'disabled':''} aria-label="Próxima página"><span>Próxima</span> ${icon('next','small')}</button>
+  </div>`;
+}
+function contextPerson(){if(state.mode==='client')return Object.keys(state.draft).length?{...state.draft,status:state.editingId?(state.draft.status||'cliente'):'cliente',kind:state.kind}:{name:'Novo cliente',status:'cliente',kind:state.kind};if(state.mode==='lead')return {...state.draft,name:state.draft.name||'Novo lead',status:'lead',kind:state.draft.kind||'indefinido'};return current()}
+function completeness(p){if(!p)return 0;let keys=['name','phone','cpf','rg','cep','street','city','state'];return Math.round(keys.filter(k=>!!p[k]).length/keys.length*100)}
+function summaryHTML(){let p=contextPerson();if(!p)p={name:'Nenhum cadastro selecionado',status:'lead'};const progress=completeness(p);return `<div class="stage-in"><div class="info-card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Resumo do cadastro</h3><button class="ghost-btn" data-action="edit-selected" style="padding:6px 9px">${icon('edit','small')} Editar</button></div><div class="info-header"><span class="info-avatar ${p.name?'':'empty'}"><span data-summary="initial">${esc(initial(p.name||'?'))}</span></span><div style="min-width:0;flex:1"><div class="info-name" data-summary="name">${esc(p.name||'Novo contato')}</div><div class="mini-note">${esc(p.id||'Cadastro ainda não salvo')}</div></div><span class="status-pill ${p.status||'lead'}">${titleFor(p.status)}</span></div><div class="summary-grid"><div class="summary-cell">${icon('phone')}<div><small>Telefone</small><strong data-summary="phone">${esc(p.phone||'Não informado')}</strong></div></div><div class="summary-cell">${icon('shield')}<div><small>Benefício</small><strong data-summary="benefit">${esc(labelFor(p.kind||state.kind))}</strong></div></div><div class="summary-cell">${icon('file')}<div><small>CPF</small><strong data-summary="cpf">${esc(p.cpf||'Não informado')}</strong></div></div><div class="summary-cell">${icon('pin')}<div><small>Cidade / UF</small><strong data-summary="location">${esc(p.city||'Não informada')}${p.state?' / '+esc(p.state):''}</strong></div></div></div><div class="separation"></div><div class="progress-label"><span>Preenchimento demonstrativo</span><span data-summary="progress">${progress}%</span></div><div class="progress-track"><div class="progress-fill" data-summary-progress style="width:${progress}%"></div></div><div class="mini-note">Indicador ilustrativo de campos básicos. Não valida requisitos jurídicos.</div></div><div class="aside-tip">${icon('spark','big')}<div>O resumo acompanha o registro selecionado. Alterne as abas acima para verificar o documento ou as próximas etapas.</div></div></div>`}
+const CONTRACT_TITLE='CONTRATO DE PRESTAÇÃO DE SERVIÇOS ADVOCATÍCIOS';
+// A pré-visualização mostra as páginas do próprio contrato (não mais documentos separados).
+const docs=[
+ {title:CONTRACT_TITLE,body:'Qualificação das partes: contratante, contratada e dados de identificação obtidos do cadastro selecionado.'},
+ {title:CONTRACT_TITLE,body:'Objeto do contrato e poderes conferidos para o acompanhamento administrativo e judicial do caso.'},
+ {title:CONTRACT_TITLE,body:'Honorários contratuais, forma de pagamento e critérios de reajuste previstos no modelo aprovado.'},
+ {title:CONTRACT_TITLE,body:'Declarações do contratante, hipossuficiência e documentos complementares exigidos.'},
+ {title:CONTRACT_TITLE,body:'Vigência, rescisão, foro de eleição e disposições gerais aplicáveis ao atendimento.'},
+ {title:CONTRACT_TITLE,body:'Assinaturas das partes, testemunhas e encerramento do instrumento.'}
+];
+function paper(p){let d=docs[state.docIndex];return `<div class="doc-paper"><div class="doc-letterhead"><div><b>AP</b><div style="font:11px var(--serif)">ANA PASSOS</div><small>ADVOCACIA E CONSULTORIA</small></div><small>OAB/ES 43086</small></div><div class="doc-heading">${d.title}</div><div class="doc-body"><p><b>CONTRATANTE: ${esc((p?.name||'NOME DO CLIENTE').toUpperCase())}</b>, ${esc(p?.city||'cidade não informada')}${p?.state?'/'+esc(p.state):''}, e demais dados de qualificação conforme o cadastro.</p><p>${esc(d.body)}</p><p>Este painel não reproduz o conteúdo jurídico integral. A paginação e as cláusulas permanecem para a homologação do gerador.</p><p style="margin-top:25px">Local e data: _________________________</p></div><div class="doc-sign">${esc(p?.name||'Assinatura')}</div><div class="doc-pagenum">Página ${state.docIndex+1} de ${docs.length}</div></div>`}
+function previewHTML(){let p=contextPerson();return `<div class="stage-in"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b style="font:19px var(--serif)">Pré-visualização do contrato</b><div class="mini-note">Representação visual · sem geração de DOCX</div></div><button class="ghost-btn" data-action="drawer">${icon('eye','small')} Ampliar</button></div>${paper(p)}${docNavigation()}<button class="view-expand" data-action="drawer">Ver documento ampliado ${icon('next','small')}</button></div>`}
+function stepsHTML(){let p=contextPerson();let flags=[{label:'Contato identificado',desc:'Nome e telefone',ok:!!p?.name&&!!p?.phone},{label:'Dados de qualificação',desc:'CPF, endereço e dados pessoais',ok:!!p?.cpf&&!!p?.city},{label:'Tipo de atendimento',desc:'Aposentadoria ou BPC',ok:!!p?.kind&&p.kind!=='indefinido'},{label:'Revisão de informações',desc:'Conferência manual pelo funcionário',ok:false},{label:'Geração documental',desc:'Disponível após revisão e validação',ok:false}];return `<div class="stage-in"><div class="info-card"><h3>Próximas etapas</h3><div class="mini-note">Fluxo progressivo entre lead e cliente</div><div class="checklist">${flags.map((x,i)=>`<div class="checkitem ${x.ok?'done':''}"><div class="checkicon">${x.ok?icon('check','tiny'):i+1}</div><div><strong>${x.label}</strong><small>${x.desc}</small></div></div>`).join('')}</div></div><div class="aside-tip">${icon('spark','big')}<div>Quando informações novas chegarem, abra <b>Buscar cliente → Completar cadastro</b>. O mesmo registro pode evoluir de lead para cliente.</div></div><button class="btn btn-primary" style="width:100%;margin-top:12px" data-action="edit-selected">${icon('edit','small')} Continuar preenchimento</button></div>`}
+function renderAside(){let area=$('#context-content');area.innerHTML=state.side==='preview'?previewHTML():state.side==='steps'?stepsHTML():summaryHTML();}
+function toast(txt,kind='ok'){let root=$('#toast-wrap');const el=document.createElement('div');el.className='toast '+(kind==='warn'?'warn':'');el.innerHTML=`${icon(kind==='warn'?'alert':'check','small')}<span>${esc(txt)}</span>`;root.append(el);setTimeout(()=>{el.style.opacity=0;el.style.transform='translateY(8px)';el.style.transition='all .25s';setTimeout(()=>el.remove(),260)},4300)}
+function openModal({title='Detalhes',sub='',content='',actions=''}){$('#modal-title').textContent=title;$('#modal-sub').textContent=sub;$('#modal-content').innerHTML=content;$('#modal-actions').innerHTML=actions||`<button class="btn btn-primary" data-close="modal">Entendi</button>`;$('#modal-root').hidden=false;document.body.style.overflow='hidden'}
+function closeModal(){$('#modal-root').hidden=true;if($('#drawer-root').hidden)document.body.style.overflow=''}
+function updateDrawer(){$('#drawer-body').innerHTML=paper(contextPerson())+docNavigation()+`<div class="hint-strip green" style="margin-top:20px">${icon('alert','small')} Visualização conceitual. Os DOCX aprovados não estão incorporados neste protótipo.</div>`}
+function openDrawer(){updateDrawer();$('#drawer-root').hidden=false;document.body.style.overflow='hidden'}
+function closeDrawer(){$('#drawer-root').hidden=true;if($('#modal-root').hidden)document.body.style.overflow=''}
+function collect(){let d={...state.draft};$$('[data-field]',$('#main-panel')).forEach(el=>{d[el.dataset.field]=el.value});state.draft=d;return d}
+function saveLead(){let d=collect();if(!(d.name||'').trim()||onlyDigits(d.phone).length<10){toast('Informe nome e telefone com DDD (10 ou 11 dígitos) antes de salvar o lead.','warn');return}let id='LEAD'+Math.floor(100+Math.random()*900);let p={...d,id,status:'lead',kind:d.kind||'indefinido'};people.unshift(p);state.selectedId=id;state.query='';state.filter='todos';toast('Lead criado nesta demonstração. Nada foi enviado ao AppSheet.');setMode('search');side('steps')}
+function saveClient(){let d=collect();if(!(d.name||'').trim()||onlyDigits(d.phone).length<10||onlyDigits(d.cpf).length!==11){toast('Preencha nome, telefone com DDD e CPF com 11 dígitos para a simulação.','warn');return}let id=state.editingId||'DEMO'+Math.floor(100+Math.random()*900);let p={...(people.find(x=>x.id===id)||{}),...d,id,status:'cliente',kind:state.kind,type:state.type,bpcType:state.bpcType};if(state.editingId){people=people.map(x=>x.id===id?p:x)}else{people.unshift(p)}state.selectedId=id;state.editingId=id;state.draft={...p};state.draftCache['edit:'+id]={draft:{...p},kind:state.kind,type:state.type,bpcType:state.bpcType,editingId:id};delete state.draftCache['new-client'];toast('Cadastro atualizado apenas nesta página. Nenhuma API foi chamada.');renderAside()}
+function clearFields(){openModal({title:'Limpar formulário?',sub:'Os dados digitados nesta tela serão descartados.',content:`<div class="hint-strip">${icon('alert','small')} Esta ação não apaga cadastros existentes. Apenas limpa o formulário atual.</div>`,actions:`<button class="btn btn-neutral" data-close="modal">Cancelar</button><button class="btn btn-danger" id="confirm-clear">Limpar campos</button>`})}
+function generatePreview(){let d=collect();if(!d.name){toast('Informe o nome do cliente para personalizar a prévia.','warn');return}state.generatorDraft={...d,kind:state.kind,type:state.type,id:state.editingId||null};state.docIndex=0;setModule('gerador');toast('Prévia ilustrativa disponível no Gerador. Nenhum DOCX foi criado.')}
+function promote(){let p=current();if(!p)return;setMode('client',p);side('steps');toast('Complete os dados e salve para promover o registro a cliente.')}
+function action(which){switch(which){case 'clear':clearFields();break;case 'save-lead':saveLead();break;case 'save-client':saveClient();break;case 'generate':generatePreview();break;case 'new-lead':setMode('lead');break;case 'new-client':setMode('client');break;case 'edit-selected':{
+  if(state.mode==='client'||state.mode==='lead'){
+    // Não abandona a tela ativa nem substitui os campos já digitados.
+    const field=$('[data-field="name"]',$('#main-panel'));
+    field?.focus();
+    field?.scrollIntoView({behavior:'smooth',block:'center'});
+  }else{let p=current();if(p){setMode('client',p)}else{toast('Selecione primeiro um cadastro.','warn')}}
+  break}case 'promote':promote();break;case 'preview-selected':side('preview');break;case 'drawer':openDrawer();break;case 'do-search':updateResults();toast('Resultados filtrados localmente.');break;}}
+// Eventos delegados: as telas podem ser substituídas sem perder os efeitos.
+document.addEventListener('click',e=>{let target=e.target.closest('button,[data-close]');if(!target)return;if(target.dataset.close==='modal'){closeModal();return}if(target.dataset.close==='drawer'){closeDrawer();return}
+ if(target.dataset.nav){setModule(target.dataset.nav);return}if(target.dataset.go){if(target.dataset.workflow){setModule('atendimento');setMode(target.dataset.workflow)}else{setModule(target.dataset.go)}return}if(target.dataset.mode){setMode(target.dataset.mode);return}if(target.dataset.previewDoc!==undefined){state.docIndex=Number(target.dataset.previewDoc);state.generatorDraft=null;setModule('gerador');return}if(target.dataset.placeholder){openModal({title:target.dataset.placeholder,sub:'Camada reservada para definição futura.',content:`<div class="hint-strip green">${icon('alert','small')} Nenhuma configuração real é executada por este protótipo. Esta área terá funções especificadas depois da aprovação da estrutura.</div>`});return}if(target.dataset.generatorInfo!==undefined){toast('Geração real de DOCX será integrada depois da aprovação visual.','warn');return}
+ if(target.dataset.side){side(target.dataset.side);return}if(target.dataset.filter){state.filter=target.dataset.filter;updateResults();return}if(target.dataset.select){state.selectedId=target.dataset.select;renderMain();renderAside();return}if(target.dataset.kind){collect();state.kind=target.dataset.kind;state.draft.kind=state.kind;renderMain();renderAside();return}if(target.dataset.person){collect();state.type=target.dataset.person;state.draft.type=state.type;renderMain();renderAside();return}if(target.dataset.bpc){collect();state.bpcType=target.dataset.bpc;state.draft.bpcType=state.bpcType;renderMain();renderAside();return}if(target.dataset.docNav){docNav(Number(target.dataset.docNav));return}if(target.dataset.doc){state.docIndex=Number(target.dataset.doc);renderAside();return}if(target.dataset.action){action(target.dataset.action);return}if(target.id==='confirm-clear'){delete state.draftCache[draftKey()];state.draft={};renderMain();renderAside();closeModal();toast('Formulário limpo.');return}if(target.id==='flow-btn'){openModal({title:'Jornada do atendimento',sub:'Os registros evoluem sem necessidade de duplicação.',content:`<div class="checklist"><div class="checkitem done"><div class="checkicon">1</div><div><strong>Lead</strong><small>Nome + telefone + assunto inicial</small></div></div><div class="checkitem done"><div class="checkicon">2</div><div><strong>Em qualificação</strong><small>Documentos e informações complementares</small></div></div><div class="checkitem done"><div class="checkicon">3</div><div><strong>Cliente</strong><small>Cadastro revisado e apto a preparar documentos</small></div></div><div class="checkitem"><div class="checkicon">4</div><div><strong>Gerar contrato</strong><small>Prévia, conferência e geração na implementação futura</small></div></div></div>`});return}if(target.id==='design-info'){openModal({title:'Sobre o conceito visual',sub:'Uma extensão de Ana Passos Advocacia e Consultoria.',content:`<div class="hint-strip green">${icon('shield','small')} Protótipo 100% offline e demonstrativo. Os dados digitados permanecem apenas nesta aba enquanto ela estiver aberta.</div><p style="margin-top:15px;color:#596c5e;font-size:13px;line-height:1.8">O projeto reúne verde institucional, detalhes em dourado, tipografia Arial, espaços funcionais e ferramentas de trabalho discretas. Explore a troca de telas, campos ativos, cartões selecionáveis, abas contextuais, sobreposições e a prévia ampliada.</p><p style="margin-top:12px;color:#596c5e;font-size:13px">Nenhum cadastro é salvo no Google Sheets, nenhuma API é consultada e nenhum DOCX real é gerado.</p>`});return}
+});
+document.addEventListener('input',e=>{if(e.target.id==='search-query'){state.query=e.target.value;updateResults();return}if(e.target.dataset.field&&$('#main-panel').contains(e.target)){if(e.target.dataset.mask)formatInput(e.target);state.draft[e.target.dataset.field]=e.target.value;updateSummaryQuiet()}});
+document.addEventListener('change',e=>{if(e.target.id==='generator-client'){state.generatorDraft=null;state.selectedId=e.target.value;renderGeneratorModule();return}if(e.target.dataset.field&&$('#main-panel').contains(e.target)){state.draft[e.target.dataset.field]=e.target.value;updateSummaryQuiet()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeDrawer()}if(e.key==='Enter'&&e.target.id==='search-query'){e.preventDefault();updateResults();}});
+window.addEventListener('scroll',()=>$('#topbar').classList.toggle('scrolled',window.scrollY>35),{passive:true});
+
+// Autenticação local (demonstração). Em produção, substituir por um provedor real.
+const AUTH_USERS=[
+  {user:'teste1',pass:'teste',name:'Usuário Teste 1',role:'Atendimento'},
+  {user:'teste2',pass:'teste',name:'Usuário Teste 2',role:'Produção'},
+  {user:'teste3',pass:'teste',name:'Usuário Teste 3',role:'Administração'}
+];
+const AUTH_KEY='ap-v26-auth';
+function applySession(session){
+  $('#auth-name').textContent=session.name;
+  $('#auth-role').textContent=session.role;
+  $('#auth-initial').textContent=initial(session.name);
+}
+function openSystem(session){
+  applySession(session);
+  document.body.classList.add('auth-ready');
+  const gate=$('#auth-gate');
+  if(!gate||gate.hidden)return;
+  gate.classList.add('closing');
+  setTimeout(()=>{gate.hidden=true;gate.classList.remove('closing')},380);
+}
+function lockSystem(){
+  try{sessionStorage.removeItem(AUTH_KEY)}catch{}
+  document.body.classList.remove('auth-ready');
+  $('#auth-name').textContent='Ambiente demo';
+  $('#auth-role').textContent='Sem conexão externa';
+  $('#auth-initial').textContent='AP';
+  $('#auth-form').reset();
+  const err=$('#auth-error');if(err)err.hidden=true;
+  const gate=$('#auth-gate');if(gate){gate.hidden=false;gate.classList.remove('closing')}
+  $('#auth-user').focus();
+}
+$('#auth-form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const user=$('#auth-user').value.trim().toLowerCase();
+  const pass=$('#auth-pass').value;
+  const found=AUTH_USERS.find(u=>u.user===user&&u.pass===pass);
+  const err=$('#auth-error');
+  if(!found){
+    err.textContent='Usuário ou senha inválidos. Verifique e tente novamente.';
+    err.hidden=false;
+    $('#auth-pass').value='';
+    $('#auth-pass').focus();
+    return;
+  }
+  err.hidden=true;
+  const session={user:found.user,name:found.name,role:found.role};
+  try{sessionStorage.setItem(AUTH_KEY,JSON.stringify(session))}catch{}
+  openSystem(session);
+  toast('Bem-vindo(a), '+found.name+'.');
+});
+$('#logout-btn').addEventListener('click',()=>{lockSystem();toast('Sessão encerrada.','warn')});
+
+// Estado inicial
+renderMain();renderAside();setModule('inicio');
+(function boot(){
+  let session=null;
+  try{session=JSON.parse(sessionStorage.getItem(AUTH_KEY)||'null')}catch{}
+  if(session&&session.user&&AUTH_USERS.some(u=>u.user===session.user)){
+    applySession(session);
+    document.body.classList.add('auth-ready');
+    $('#auth-gate').hidden=true;
+  }else{
+    document.body.classList.remove('auth-ready');
+    $('#auth-gate').hidden=false;
+    $('#auth-user').focus();
+  }
+})();
+</script>
+</body>
+</html>
